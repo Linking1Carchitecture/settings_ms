@@ -9,7 +9,7 @@ services:
     expose:
       - ${DB_PORT}
     ports:
-      - ${DB_PORT}:5432
+      - ${DB_PORT}:${DB_PORT}
     volumes:
       - data:/var/lib/postgresql/data
     command: -p 5433
