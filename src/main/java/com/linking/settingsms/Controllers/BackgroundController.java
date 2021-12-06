@@ -2,19 +2,17 @@ package com.linking.settingsms.Controllers;
 
 import com.linking.settingsms.Model.Background;
 import com.linking.settingsms.Services.BackgroundService;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 
 @RestController
 public class BackgroundController {
@@ -39,6 +37,7 @@ public class BackgroundController {
         try {
             con = new FTPClient();
             con.connect(FTP_ADDRESS, FTP_PORT);
+            con.setRemoteVerificationEnabled(false);
             if (con.login(FTP_USER, FTP_PASSWORD)) {
                 con.enterLocalPassiveMode(); // important!
                 ByteArrayOutputStream imageBytes = new ByteArrayOutputStream();
@@ -59,6 +58,7 @@ public class BackgroundController {
         try {
             con = new FTPClient();
             con.connect(FTP_ADDRESS, FTP_PORT);
+            con.setRemoteVerificationEnabled(false);
             if (con.login(FTP_USER, FTP_PASSWORD)) {
                 con.enterLocalPassiveMode(); // important!
                 ArrayList<String> userBackgrounds = new ArrayList<>();
@@ -85,8 +85,15 @@ public class BackgroundController {
     }
 
     @PostMapping("/backgrounds/{user_id}/new")
-    public ResponseEntity<?>  newBackground(@PathVariable("user_id") Integer user_id, @RequestParam("image")MultipartFile imageFile){
-        System.out.println("Just called: "+imageFile.getSize());
+    public ResponseEntity<?>  newBackground(@PathVariable("user_id") Integer user_id, @RequestBody HashMap<String, Object> image){
+        //System.out.println(user_id);
+        //System.out.println(base64Image);
+        String base64image = image.get("image").toString();
+        String[] parts = base64image.split(",");
+        //System.out.println("parts[0]: "+parts[0]);
+        //System.out.println("parts[1]: "+parts[1]);
+        String fileExtension = parts[0].substring(parts[0].indexOf("/")+1, parts[0].indexOf(";"));
+        //System.out.println("fileExtension: "+fileExtension);
         try {
             con = new FTPClient();
             con.connect(FTP_ADDRESS,FTP_PORT);
@@ -108,20 +115,18 @@ public class BackgroundController {
                     con.makeDirectory(location);
                 }
                 Background background = backgroundService.newBackground(user_id);
-                String imageExtension = FilenameUtils.getExtension(imageFile.getOriginalFilename());
-                String image_location = location+"/"+background.getBackground_id()+"."+imageExtension;
-                System.out.println("Before store: "+imageFile.getSize());
-                boolean result = con.storeFile(image_location, imageFile.getInputStream());
-                System.out.println("Result: "+result+"   "+con.getReplyString());
-                System.out.println("After store: "+imageFile.getSize());
+                String image_location = location+"/"+background.getBackground_id()+"."+fileExtension;
+                InputStream is = new ByteArrayInputStream(Base64.getMimeDecoder().decode(parts[1]));
+                boolean result = con.storeFile(image_location, is);
+                //System.out.println("Result: "+result+"   "+con.getReplyString());
                 backgroundService.setBackgroundLocation(background.getBackground_id(), image_location);
                 con.logout();
                 con.disconnect();
-                return new ResponseEntity<>("You successfully uploaded " + imageFile.getOriginalFilename() + "!", HttpStatus.OK);
+                return new ResponseEntity<>("Image successfully uploaded!", HttpStatus.OK);
             }
             return new ResponseEntity<>("Bad credentials!", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            return new ResponseEntity<>("Could not upload " + imageFile.getOriginalFilename() + "!\n"+e, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Could not upload image!\n"+e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -130,6 +135,7 @@ public class BackgroundController {
         try {
             con = new FTPClient();
             con.connect(FTP_ADDRESS, FTP_PORT);
+            con.setRemoteVerificationEnabled(false);
             Background background = backgroundService.getBackgroundById(background_id);
             if (con.login(FTP_USER, FTP_PASSWORD)) {
                 String image_location = background.getImageLocation();
