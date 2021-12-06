@@ -26,7 +26,7 @@ public class ConfigurationController {
     }
 
     @GetMapping("/settings/{user_id}")
-    public Configuration userConfig(@PathVariable("user_id") Long user_id) {
+    public Configuration userConfig(@PathVariable("user_id") Integer user_id) {
         return configurationService.getConfigByUser(user_id);
     }
 
@@ -47,7 +47,7 @@ public class ConfigurationController {
     }
 
     @PutMapping("/settings/{user_id}/changeBackground")
-    public ResponseEntity<?> changeBackground(@PathVariable("user_id") Long user_id, @RequestParam(value = "background_id", required = false) Long background_id){
+    public ResponseEntity<?> changeBackground(@PathVariable("user_id") Integer user_id, @RequestParam(value = "background_id", required = false) Integer background_id){
         Configuration config = configurationService.getConfigByUser(user_id);
         if(config != null) {
             if (background_id != null) {
@@ -60,7 +60,7 @@ public class ConfigurationController {
     }
 
     @DeleteMapping("/settings/delete")
-    public  ResponseEntity<?> deleteConfig(@RequestParam("config_id") Long config_id){
+    public  ResponseEntity<?> deleteConfig(@RequestParam("config_id") Integer config_id){
         if(configurationService.existsConfig(config_id)){
             return  configurationService.deleteConfig(config_id);
         }

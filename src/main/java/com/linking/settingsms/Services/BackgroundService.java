@@ -17,29 +17,34 @@ public class BackgroundService {
     @Autowired
     BackgroundRepository backgroundRepository;
 
-    public ArrayList<Background> getUserBackgrounds(Long user_id) {
+    public ArrayList<String> getUserBackgrounds(Integer user_id) {
         return backgroundRepository.findUserBackgrounds(user_id);
     }
 
-    public Background newBackground(Long user_id, String imageName, byte[] image) {
-        Background background = new Background(user_id, imageName, image);
+    public Background getBackgroundById(Integer background_id) {
+        return backgroundRepository.getById(background_id);
+    }
+
+    public Background newBackground(Integer user_id) {
+        Background background = new Background(user_id);
         return backgroundRepository.save(background);
     }
 
-    public ResponseEntity<?> updateImageName(Long background_id, String imageName) {
-        if(backgroundRepository.existsById(background_id)){
-            backgroundRepository.updateImageName(background_id, imageName);
-            return new ResponseEntity<>("Background name updated", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Background not found", HttpStatus.NOT_FOUND );
+    public void setBackgroundLocation(Integer background_id, String image_location) {
+        backgroundRepository.setImageLocation(background_id, image_location);
     }
 
-    public ResponseEntity<?> deleteBackground(Long background_id) {
+    public ResponseEntity<?> deleteBackground(Integer background_id) {
         if(backgroundRepository.existsById(background_id)){
             backgroundRepository.deleteById(background_id);
             return new ResponseEntity<>("Background deleted", HttpStatus.OK);
         }
         return new ResponseEntity<>("Background not found", HttpStatus.NOT_FOUND );
+    }
+
+    public ResponseEntity<?> deleteUserBackgrounds(Integer user_id) {
+        backgroundRepository.deleteByUserId(user_id);
+        return new ResponseEntity<>("Backgrounds deleted!", HttpStatus.OK);
     }
 
     public ArrayList<Background> getAllBackgrounds() {

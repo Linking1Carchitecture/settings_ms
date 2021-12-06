@@ -13,30 +13,30 @@ import javax.persistence.*;
 public class Configuration {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long config_id;
+    private Integer config_id;
     @Column(name = "user_id")
-    private Long user_id;
+    private Integer user_id;
     @Column(name = "subtitles")
     private boolean subtitles;
     @Column(name = "background_id", nullable = true)
-    private Long background_id;
+    private Integer background_id;
     @Column(name = "in_device")
     private String in_device;
     @Column(name = "out_device")
     private String out_device;
 
-    public Configuration(Long user_id, boolean subtitles, String in_device, String out_device) {
+    public Configuration(Integer user_id, boolean subtitles, String in_device, String out_device) {
         this.user_id = user_id;
         this.subtitles = subtitles;
         this.in_device = in_device;
         this.out_device = out_device;
     }
 
-    public Long getUser_id() {
+    public Integer getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(Long user_id) {
+    public void setUser_id(Integer user_id) {
         this.user_id = user_id;
     }
 
@@ -48,11 +48,11 @@ public class Configuration {
         this.subtitles = subtitles;
     }
 
-    public Long getBackground_id() {
+    public Integer getBackground_id() {
         return background_id;
     }
 
-    public void setBackground_id(Long background_id) {
+    public void setBackground_id(Integer background_id) {
         this.background_id = background_id;
     }
 

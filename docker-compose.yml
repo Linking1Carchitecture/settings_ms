@@ -12,7 +12,7 @@ services:
       - ${DB_PORT}:${DB_PORT}
     volumes:
       - data:/var/lib/postgresql/data
-    command: -p 5433
+    command: -p ${DB_PORT}
 
   server:
     container_name: settings_ms
@@ -21,14 +21,37 @@ services:
       dockerfile: Dockerfile
     env_file: .env
     depends_on:
+      - vsftpd
       - database
     links:
+      - vsftpd
       - database
     networks:
       - default
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:${DB_PORT}/${POSTGRES_DB}
+      - POSTGRES_HOST=database
+
+  vsftpd:
+    container_name: vsftpd
+    image: fauria/vsftpd
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "20:20"
+      - "21:21"
+      - "21100-21110:21100-21110"
+    expose:
+      - 21
+    environment:
+      - PASV_MIN_PORT=21100
+      - PASV_MAX_PORT=21110
+    volumes:
+      - /var/app/ftp:/home/vsftpd
+      - /var/log/ftp:/var/log/vsftpd
+
+
 volumes:
   data:
