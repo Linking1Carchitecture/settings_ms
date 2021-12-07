@@ -1,0 +1,9 @@
+com/linking/settingsms/Controllers/BackgroundController.class
+com/linking/settingsms/Repositories/BackgroundRepository.class
+com/linking/settingsms/Repositories/ConfigurationRepository.class
+com/linking/settingsms/Services/ConfigurationService.class
+com/linking/settingsms/Controllers/ConfigurationController.class
+com/linking/settingsms/Services/BackgroundService.class
+com/linking/settingsms/Model/Configuration.class
+com/linking/settingsms/Model/Background.class
+com/linking/settingsms/SettingsMsApplication.class

@@ -1,0 +1,9 @@
+/home/diego/Desktop/Project/settings_ms/src/main/java/com/linking/settingsms/Controllers/ConfigurationController.java
+/home/diego/Desktop/Project/settings_ms/src/main/java/com/linking/settingsms/Repositories/BackgroundRepository.java
+/home/diego/Desktop/Project/settings_ms/src/main/java/com/linking/settingsms/Model/Background.java
+/home/diego/Desktop/Project/settings_ms/src/main/java/com/linking/settingsms/Controllers/BackgroundController.java
+/home/diego/Desktop/Project/settings_ms/src/main/java/com/linking/settingsms/SettingsMsApplication.java
+/home/diego/Desktop/Project/settings_ms/src/main/java/com/linking/settingsms/Services/ConfigurationService.java
+/home/diego/Desktop/Project/settings_ms/src/main/java/com/linking/settingsms/Services/BackgroundService.java
+/home/diego/Desktop/Project/settings_ms/src/main/java/com/linking/settingsms/Repositories/ConfigurationRepository.java
+/home/diego/Desktop/Project/settings_ms/src/main/java/com/linking/settingsms/Model/Configuration.java
