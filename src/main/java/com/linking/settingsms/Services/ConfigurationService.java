@@ -29,12 +29,12 @@ public class ConfigurationService {
         return (ArrayList<Configuration>) configurationRepository.findAll();
     }
 
-    public ResponseEntity updateConfig(Configuration newConfig) {
+    public ResponseEntity<?> updateConfig(Configuration newConfig) {
         configurationRepository.updateConfig(newConfig.getConfig_id(), newConfig.getSubtitles(), newConfig.getIn_device(), newConfig.getOut_device());
         return new ResponseEntity<>("Settings updated", HttpStatus.OK);
     }
 
-    public ResponseEntity changeBackground(Integer user_id, Integer background_id ) {
+    public ResponseEntity<?> changeBackground(Integer user_id, Integer background_id ) {
         if(user_id != null){
             configurationRepository.updateBackground(user_id, background_id);
             return new ResponseEntity<>("Background updated", HttpStatus.OK);

@@ -5,6 +5,7 @@ import com.linking.settingsms.Services.BackgroundService;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +21,18 @@ public class BackgroundController {
     @Autowired
     BackgroundService backgroundService;
 
-    private String FTP_ADDRESS="vsftpd";
-    private int FTP_PORT = 21;
-    private String FTP_USER = "myuser";
-    private String FTP_PASSWORD = "mypass";
+    @Value("${spring.ftp.host}")
+    private String FTP_ADDRESS;
+
+    @Value("${spring.ftp.port}")
+    private int FTP_PORT;
+
+    @Value("${spring.ftp.user}")
+    private String FTP_USER;
+
+    @Value("${spring.ftp.password}")
+    private String FTP_PASSWORD;
+    
     private FTPClient con = null;
 
     @GetMapping("/backgrounds")
@@ -101,9 +110,8 @@ public class BackgroundController {
 
             if (con.login(FTP_USER, FTP_PASSWORD)) {
                 con.enterLocalPassiveMode(); // important!
-                boolean test = con.setFileType(FTP.BINARY_FILE_TYPE);
+                con.setFileType(FTP.BINARY_FILE_TYPE);
                 con.setFileTransferMode(FTP.BINARY_FILE_TYPE);
-                System.out.println(test);
                 String location = "/backgrounds";
                 boolean dirExists = con.changeWorkingDirectory(location);
                 if (!dirExists) {
@@ -117,8 +125,7 @@ public class BackgroundController {
                 Background background = backgroundService.newBackground(user_id);
                 String image_location = location+"/"+background.getBackground_id()+"."+fileExtension;
                 InputStream is = new ByteArrayInputStream(Base64.getMimeDecoder().decode(parts[1]));
-                boolean result = con.storeFile(image_location, is);
-                //System.out.println("Result: "+result+"   "+con.getReplyString());
+                con.storeFile(image_location, is);
                 backgroundService.setBackgroundLocation(background.getBackground_id(), image_location);
                 con.logout();
                 con.disconnect();

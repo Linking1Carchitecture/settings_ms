@@ -32,6 +32,10 @@ public class Configuration {
         this.out_device = out_device;
     }
 
+    public Integer getConfig_id(){
+        return config_id;
+    }
+
     public Integer getUser_id() {
         return user_id;
     }
