@@ -28,9 +28,9 @@ services:
       - database
     networks:
       - default
-      - linking-net
+      - linking_mq_net
     external_links:
-      - linking_mq
+      - rabbitmq
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     environment:
@@ -59,6 +59,6 @@ services:
 volumes:
   data:
 
-networks: 
-  linking-net:
+networks:
+  linking_mq_net:
     external: true
