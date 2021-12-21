@@ -21,8 +21,8 @@ public class ConfigurationService {
         return  configurationRepository.save(config);
     }
 
-    public Configuration getConfigByUser(Integer user_id){
-        return configurationRepository.findConfigByUser(user_id);
+    public Configuration getConfigByUser(String user_email){
+        return configurationRepository.findConfigByUser(user_email);
     }
 
     public ArrayList<Configuration> getAllConfig() {
@@ -34,9 +34,9 @@ public class ConfigurationService {
         return new ResponseEntity<>("Settings updated", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> changeBackground(Integer user_id, Integer background_id ) {
-        if(user_id != null){
-            configurationRepository.updateBackground(user_id, background_id);
+    public ResponseEntity<?> changeBackground(String user_email, Integer background_id ) {
+        if(user_email != null){
+            configurationRepository.updateBackground(user_email, background_id);
             return new ResponseEntity<>("Background updated", HttpStatus.OK);
         }
         return new ResponseEntity<>("User configuration not found", HttpStatus.BAD_REQUEST );
@@ -51,8 +51,8 @@ public class ConfigurationService {
         return configurationRepository.existsById(config_id);
     }
 
-    public ResponseEntity<?> noBackground(Integer user_id) {
-        configurationRepository.noBackground(user_id);
+    public ResponseEntity<?> noBackground(String user_email) {
+        configurationRepository.noBackground(user_email);
         return new ResponseEntity<>("Background set as Null", HttpStatus.OK);
     }
 }

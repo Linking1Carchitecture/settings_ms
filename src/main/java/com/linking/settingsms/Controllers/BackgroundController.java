@@ -63,7 +63,7 @@ public class BackgroundController {
     }
 
     @GetMapping("/backgrounds/user")
-    public ArrayList<String> getUserBackgrounds(@RequestParam("id") Integer user_id) throws Exception {
+    public ArrayList<String> getUserBackgrounds(@RequestParam("email") String user_email) throws Exception {
         try {
             con = new FTPClient();
             con.connect(FTP_ADDRESS, FTP_PORT);
@@ -72,7 +72,7 @@ public class BackgroundController {
                 con.enterLocalPassiveMode(); // important!
                 ArrayList<String> userBackgrounds = new ArrayList<>();
 
-                for (String location : backgroundService.getUserBackgrounds(user_id)) {
+                for (String location : backgroundService.getUserBackgrounds(user_email)) {
 
                     ByteArrayOutputStream imageBytes = new ByteArrayOutputStream();
                     boolean success = con.retrieveFile(location, imageBytes);
@@ -93,9 +93,9 @@ public class BackgroundController {
         }
     }
 
-    @PostMapping("/backgrounds/{user_id}/new")
-    public ResponseEntity<?>  newBackground(@PathVariable("user_id") Integer user_id, @RequestBody HashMap<String, Object> image){
-        //System.out.println(user_id);
+    @PostMapping("/backgrounds/{user_email}/new")
+    public ResponseEntity<?>  newBackground(@PathVariable("user_email") String user_email, @RequestBody HashMap<String, Object> image){
+        //System.out.println(user_email);
         //System.out.println(base64Image);
         String base64image = image.get("image").toString();
         String[] parts = base64image.split(",");
@@ -117,12 +117,12 @@ public class BackgroundController {
                 if (!dirExists) {
                     con.makeDirectory(location);
                 }
-                location = "/backgrounds/"+user_id;
+                location = "/backgrounds/"+user_email;
                 dirExists = con.changeWorkingDirectory(location);
                 if (!dirExists) {
                     con.makeDirectory(location);
                 }
-                Background background = backgroundService.newBackground(user_id);
+                Background background = backgroundService.newBackground(user_email);
                 String image_location = location+"/"+background.getBackground_id()+"."+fileExtension;
                 InputStream is = new ByteArrayInputStream(Base64.getMimeDecoder().decode(parts[1]));
                 con.storeFile(image_location, is);
@@ -147,7 +147,7 @@ public class BackgroundController {
             if (con.login(FTP_USER, FTP_PASSWORD)) {
                 String image_location = background.getImageLocation();
                 con.deleteFile(image_location);
-                con.removeDirectory("backgrounds/"+background.getUser_id());
+                con.removeDirectory("backgrounds/"+background.getUser_email());
                 con.logout();
                 con.disconnect();
                 return  backgroundService.deleteBackground(background_id);
@@ -158,19 +158,19 @@ public class BackgroundController {
         }
     }
 
-    @DeleteMapping("/backgrounds/delete/{user_id}")
-    public  ResponseEntity<?> deleteUserBackgrounds(@PathVariable("user_id") Integer user_id){
+    @DeleteMapping("/backgrounds/delete/{user_email}")
+    public  ResponseEntity<?> deleteUserBackgrounds(@PathVariable("user_email") String user_email){
         try {
             con = new FTPClient();
             con.connect(FTP_ADDRESS, FTP_PORT);
             if (con.login(FTP_USER, FTP_PASSWORD)) {
-                for (String location : backgroundService.getUserBackgrounds(user_id)) {
+                for (String location : backgroundService.getUserBackgrounds(user_email)) {
                     con.deleteFile(location);
                 }
-                con.removeDirectory("backgrounds/"+user_id);
+                con.removeDirectory("backgrounds/"+user_email);
                 con.logout();
                 con.disconnect();
-                return backgroundService.deleteUserBackgrounds(user_id);
+                return backgroundService.deleteUserBackgrounds(user_email);
             }
             return new ResponseEntity<>("Bad credentials!", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {

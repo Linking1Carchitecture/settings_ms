@@ -1,13 +1,25 @@
 package com.linking.settingsms.RabbitMQ;
 
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageListener;
-import org.springframework.stereotype.Service;
+import com.linking.settingsms.Model.Configuration;
+import com.linking.settingsms.Repositories.ConfigurationRepository;
 
-@Service
-public class Consumer implements MessageListener {
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Component;
 
-	public void onMessage(Message message) {
-		System.out.println("Consuming Message - " + new String(message.getBody()));
+@Component
+public class Consumer{
+
+    @Autowired
+    ConfigurationRepository configurationRepository;
+
+	@RabbitListener(queues = {"${spring.rabbitmq.queue}"})
+	public void consume(@Payload String email) {
+		// System.out.println("Consuming Message - " + email);
+		Configuration config = new Configuration(email);
+		// System.out.println("Configuration created - " + config.toString());
+		configurationRepository.save(config);
+		// System.out.println("Saved - " + saved.toString());
 	}
 }

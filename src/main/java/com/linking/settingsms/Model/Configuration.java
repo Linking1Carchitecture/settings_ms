@@ -14,34 +14,39 @@ public class Configuration {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer config_id;
-    @Column(name = "user_id")
-    private Integer user_id;
+    @Column(name = "user_email")
+    private String user_email;
     @Column(name = "subtitles")
     private boolean subtitles;
     @Column(name = "background_id", nullable = true)
     private Integer background_id;
-    @Column(name = "in_device")
+    @Column(name = "in_device", nullable = true)
     private String in_device;
-    @Column(name = "out_device")
+    @Column(name = "out_device", nullable = true)
     private String out_device;
 
-    public Configuration(Integer user_id, boolean subtitles, String in_device, String out_device) {
-        this.user_id = user_id;
+    public Configuration(String user_email, boolean subtitles, String in_device, String out_device) {
+        this.user_email = user_email;
         this.subtitles = subtitles;
         this.in_device = in_device;
         this.out_device = out_device;
+    }
+
+    public Configuration(String user_email) {
+        this.user_email = user_email;
+        this.subtitles = false;
     }
 
     public Integer getConfig_id(){
         return config_id;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public String getUser_email() {
+        return user_email;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setUser_email(String user_email) {
+        this.user_email = user_email;
     }
 
     public boolean getSubtitles() {
@@ -74,5 +79,5 @@ public class Configuration {
 
     public void setOut_device(String out_device) {
         this.out_device = out_device;
-    }
+    }   
 }

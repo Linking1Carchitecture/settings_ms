@@ -17,16 +17,16 @@ public class BackgroundService {
     @Autowired
     BackgroundRepository backgroundRepository;
 
-    public ArrayList<String> getUserBackgrounds(Integer user_id) {
-        return backgroundRepository.findUserBackgrounds(user_id);
+    public ArrayList<String> getUserBackgrounds(String user_email) {
+        return backgroundRepository.findUserBackgrounds(user_email);
     }
 
     public Background getBackgroundById(Integer background_id) {
         return backgroundRepository.getById(background_id);
     }
 
-    public Background newBackground(Integer user_id) {
-        Background background = new Background(user_id);
+    public Background newBackground(String user_email) {
+        Background background = new Background(user_email);
         return backgroundRepository.save(background);
     }
 
@@ -42,8 +42,8 @@ public class BackgroundService {
         return new ResponseEntity<>("Background not found", HttpStatus.NOT_FOUND );
     }
 
-    public ResponseEntity<?> deleteUserBackgrounds(Integer user_id) {
-        backgroundRepository.deleteByUserId(user_id);
+    public ResponseEntity<?> deleteUserBackgrounds(String user_email) {
+        backgroundRepository.deleteByUserId(user_email);
         return new ResponseEntity<>("Backgrounds deleted!", HttpStatus.OK);
     }
 
