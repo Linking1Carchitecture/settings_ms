@@ -14,8 +14,8 @@ public interface ConfigurationRepository extends JpaRepository<Configuration, In
     void updateBackground(String user_email, Integer background_id);
 
     @Modifying
-    @Query(value = " UPDATE configuration SET subtitles=?2, in_device=?3, out_device=?4 WHERE config_id=?1", nativeQuery = true)
-    void updateConfig(Integer config_id, boolean subtitles, String in_device, String out_device);
+    @Query(value = " UPDATE configuration SET in_video=?2, in_audio=?3, out_audio=?4 WHERE config_id=?1", nativeQuery = true)
+    void updateConfig(Integer config_id, String in_video, String in_audio, String out_audio);
 
     @Modifying
     @Query(value = " UPDATE configuration SET background_id=NULL WHERE user_email=?1", nativeQuery = true)

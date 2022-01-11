@@ -30,7 +30,7 @@ public class ConfigurationService {
     }
 
     public ResponseEntity<?> updateConfig(Configuration newConfig) {
-        configurationRepository.updateConfig(newConfig.getConfig_id(), newConfig.getSubtitles(), newConfig.getIn_device(), newConfig.getOut_device());
+        configurationRepository.updateConfig(newConfig.getConfig_id(), newConfig.getIn_audio(), newConfig.getOut_audio(), newConfig.getIn_video());
         return new ResponseEntity<>("Settings updated", HttpStatus.OK);
     }
 

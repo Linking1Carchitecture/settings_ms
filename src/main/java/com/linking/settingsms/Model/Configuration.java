@@ -16,25 +16,24 @@ public class Configuration {
     private Integer config_id;
     @Column(name = "user_email")
     private String user_email;
-    @Column(name = "subtitles")
-    private boolean subtitles;
+    @Column(name = "in_video", nullable = true)
+    private String in_video;
     @Column(name = "background_id", nullable = true)
     private Integer background_id;
-    @Column(name = "in_device", nullable = true)
-    private String in_device;
-    @Column(name = "out_device", nullable = true)
-    private String out_device;
+    @Column(name = "in_audio", nullable = true)
+    private String in_audio;
+    @Column(name = "out_audio", nullable = true)
+    private String out_audio;
 
-    public Configuration(String user_email, boolean subtitles, String in_device, String out_device) {
+    public Configuration(String user_email, String in_video, String in_audio, String out_audio) {
         this.user_email = user_email;
-        this.subtitles = subtitles;
-        this.in_device = in_device;
-        this.out_device = out_device;
+        this.in_video = in_video;
+        this.in_audio = in_audio;
+        this.out_audio = out_audio;
     }
 
     public Configuration(String user_email) {
         this.user_email = user_email;
-        this.subtitles = false;
     }
 
     public Integer getConfig_id(){
@@ -49,12 +48,12 @@ public class Configuration {
         this.user_email = user_email;
     }
 
-    public boolean getSubtitles() {
-        return subtitles;
+    public String getIn_video() {
+        return in_video;
     }
 
-    public void setSubtitles(boolean subtitles) {
-        this.subtitles = subtitles;
+    public void setIn_video(String in_video) {
+        this.in_video = in_video;
     }
 
     public Integer getBackground_id() {
@@ -65,19 +64,21 @@ public class Configuration {
         this.background_id = background_id;
     }
 
-    public String getIn_device() {
-        return in_device;
+    public String getIn_audio() {
+        return in_audio;
     }
 
-    public void setIn_device(String in_device) {
-        this.in_device = in_device;
+    public void setIn_audio(String in_audio) {
+        this.in_audio = in_audio;
     }
 
-    public String getOut_device() {
-        return out_device;
+    public String getOut_audio() {
+        return out_audio;
     }
 
-    public void setOut_device(String out_device) {
-        this.out_device = out_device;
-    }   
+    public void setOut_audio(String out_audio) {
+        this.out_audio = out_audio;
+    }
+
+    
 }
