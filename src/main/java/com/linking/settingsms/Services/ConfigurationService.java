@@ -18,7 +18,10 @@ public class ConfigurationService {
     ConfigurationRepository configurationRepository;
 
     public Configuration newConfig(Configuration config) {
-        return  configurationRepository.save(config);
+        if (configurationRepository.findConfigByUser(config.getUser_email()) == null){
+            return  configurationRepository.save(config);
+        }
+        return null;
     }
 
     public Configuration getConfigByUser(String user_email){

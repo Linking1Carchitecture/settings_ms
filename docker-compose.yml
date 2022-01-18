@@ -52,8 +52,8 @@ services:
       - PASV_MIN_PORT=21100
       - PASV_MAX_PORT=21110
     volumes:
-      - /var/app/ftp:/home/vsftpd
-      - /var/log/ftp:/var/log/vsftpd
+      - ./var/app/ftp:/home/vsftpd
+      - ./var/log/ftp:/var/log/vsftpd
 
 
 volumes:

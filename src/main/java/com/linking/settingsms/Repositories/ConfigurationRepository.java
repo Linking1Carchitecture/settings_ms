@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface ConfigurationRepository extends JpaRepository<Configuration, Integer> {
-    @Query(value = "SELECT * FROM configuration WHERE user_email=?1 LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM configuration WHERE user_email=?1", nativeQuery = true)
     Configuration findConfigByUser(String user_email);
 
     @Modifying
